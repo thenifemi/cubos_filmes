@@ -2,6 +2,8 @@ import 'package:cubos_desafio_Tecnico_flutter/presentation/screens/home_screen.d
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'presentation/screens/movie_details_screen.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(

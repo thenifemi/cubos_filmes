@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/colors.dart';
 import 'text_widget.dart';
 
 class PrimaryMovieCard extends StatelessWidget {
@@ -24,8 +25,8 @@ class PrimaryMovieCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         height: 520,
-
         //520px parecia um ajuste melhor do que 470px
+
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -101,4 +102,58 @@ class PrimaryMovieCard extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget grayContainer(
+  String label,
+  String subLabel,
+) {
+  return Container(
+    height: 35.0,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(6.0),
+      color: MColors.whiteSmoke,
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Center(
+        child: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(text: "$label: "),
+              TextSpan(
+                text: subLabel,
+                style: boldFont(MColors.textDark, 14.0),
+              ),
+            ],
+            style: normalFont(Colors.grey, 12),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget transparentContainer(
+  String label,
+) {
+  return Container(
+    height: 35.0,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(6.0),
+      border: Border.all(width: 0.4, color: Colors.grey),
+      color: Colors.white,
+    ),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Center(
+        child: PrimaryText(
+          text: label.toUpperCase(),
+          color: Colors.grey,
+          fontSize: 16.0,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ),
+  );
 }

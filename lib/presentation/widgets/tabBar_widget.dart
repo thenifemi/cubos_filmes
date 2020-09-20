@@ -1,7 +1,8 @@
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
-import 'package:cubos_desafio_Tecnico_flutter/presentation/utils/colors.dart';
-import 'package:cubos_desafio_Tecnico_flutter/presentation/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/colors.dart';
+import 'text_widget.dart';
 
 class PrimaryTabBar extends StatelessWidget {
   final TabController tabController;

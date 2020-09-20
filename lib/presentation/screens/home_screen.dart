@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/colors.dart';
@@ -6,6 +7,7 @@ import '../widgets/movie_card_widget.dart';
 import '../widgets/tabBar_widget.dart';
 import '../widgets/text_widget.dart';
 import '../widgets/textfield_widget.dart';
+import 'movie_details_screen.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -41,6 +43,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         preferredSize: Size.fromHeight(105.0),
         child: Column(
           children: [
+            //AppBar
             PrimaryAppBar(
               backgroundColor: Colors.white,
               title: PrimaryText(
@@ -89,11 +92,20 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 shrinkWrap: true,
                 itemCount: 6,
                 itemBuilder: (context, i) {
-                  return PrimaryMovieCard(
-                    heroTag: i.toString(),
-                    movieImage: 'assets/images/mulan.jpg',
-                    movieName: "Mulan",
-                    movieGenre: "Ação - Aventura",
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => MovieDetailScreen(),
+                        ),
+                      );
+                    },
+                    child: PrimaryMovieCard(
+                      heroTag: i.toString(),
+                      movieImage: 'assets/images/mulan.jpg',
+                      movieName: "Mulan",
+                      movieGenre: "Ação - Aventura",
+                    ),
                   );
                 },
               ),
