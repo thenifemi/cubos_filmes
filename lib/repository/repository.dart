@@ -11,6 +11,7 @@ class MovieRepository {
 
   var getMoviesUrl = "$mainUrl/discover/movie";
   var getGenresUrl = "$mainUrl/genre/movie/list";
+  var getPopularUrl = "$mainUrl/movie/top_rated";
 
   Future<GenreResponse> getGenres() async {
     var params = {
@@ -25,6 +26,23 @@ class MovieRepository {
     } catch (e, stacktrace) {
       print("Exception occured: $e stacktrace: $stacktrace");
       return GenreResponse.withError("$e");
+    }
+  }
+
+  Future<MovieResponse> getMovies() async {
+    var params = {
+      "api_key": apikey,
+      "language": "en-US",
+      "page": 1,
+    };
+
+    try {
+      Response response =
+          await _dio.get(getPopularUrl, queryParameters: params);
+      return MovieResponse.fromJson(response.data);
+    } catch (e, stacktrace) {
+      print("Exception occured: $e stacktrace: $stacktrace");
+      return MovieResponse.withError("$e");
     }
   }
 
