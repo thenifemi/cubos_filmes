@@ -21,9 +21,9 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
           slivers: <Widget>[
             SliverPersistentHeader(
               pinned: true,
-              floating: false,
+              floating: true,
               delegate: CustomSliverDelegate(
-                expandedHeight: 303.0,
+                expandedHeight: 200.0,
               ),
             ),
             SliverFillRemaining(
@@ -70,7 +70,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
     ];
 
     return SizedBox(
-      height: expandedHeight + expandedHeight / 2,
+      height: expandedHeight + expandedHeight / 1,
       child: Stack(
         children: [
           SizedBox(
@@ -161,7 +161,7 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => expandedHeight + expandedHeight / 2;
+  double get maxExtent => expandedHeight + expandedHeight / 1;
 
   @override
   double get minExtent => kToolbarHeight;
