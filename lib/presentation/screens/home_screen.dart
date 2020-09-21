@@ -1,7 +1,8 @@
-import 'package:cubos_desafio_Tecnico_flutter/bloc/get_genres_bloc.dart';
-import 'package:cubos_desafio_Tecnico_flutter/model/genre.dart';
-import 'package:cubos_desafio_Tecnico_flutter/model/genre_response.dart';
-import 'package:cubos_desafio_Tecnico_flutter/presentation/widgets/loading_widget.dart';
+import '../../bloc/get_genres_bloc.dart';
+import '../../model/genre.dart';
+import '../../model/genre_response.dart';
+import 'movies_list.dart';
+import '../widgets/loading_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,40 +15,16 @@ import '../widgets/textfield_widget.dart';
 import 'movie_details_screen.dart';
 
 class Home extends StatefulWidget {
-  final List<Genre> genres;
-  Home(this.genres);
-
   @override
-  _HomeState createState() => _HomeState(genres);
+  _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  final List<Genre> genres;
-  _HomeState(this.genres);
-
-  TabController _tabController;
-  final _tabItems = [
-    "Ação",
-    "Aventura",
-    "Fantasia",
-    "Comédia",
-  ];
-
   @override
   void initState() {
     genresBloc..getGenre();
-    _tabController = TabController(
-      initialIndex: 0,
-      length: _tabItems.length,
-      vsync: this,
-    );
-    super.initState();
-  }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+    super.initState();
   }
 
   @override
@@ -113,54 +90,22 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   }
 
   Widget buildMoviesWidget(GenreResponse data) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    List<Genre> genres = data.genres;
+
+    if (genres.length == 0) {
+      return _buildErrorWidget("No Movie");
+    } else
+      return MoviesList(
+        genres: genres,
+      );
+  }
+
+  Widget _buildErrorWidget(error) {
+    return Center(
       child: Column(
-        children: [
-          //Tabbar
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Center(
-              child: PrimaryTabBar(
-                tabController: _tabController,
-                tabItems: _tabItems,
-              ),
-            ),
-          ),
-
-          SizedBox(
-            height: 10.0,
-          ),
-
-          // Scroll view body
-          Expanded(
-            child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 6,
-              itemBuilder: (context, i) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => MovieDetailScreen(),
-                      ),
-                    );
-                  },
-                  child: PrimaryMovieCard(
-                    heroTag: i.toString(),
-                    movieImage: 'assets/images/mulan.jpg',
-                    movieName: "Mulan",
-                    movieGenre: "Ação - Aventura",
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [Text("Oops!! A n error occured $error")],
       ),
     );
   }
-
-  Widget _buildErrorWidget(error) {}
 }
