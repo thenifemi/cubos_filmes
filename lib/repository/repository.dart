@@ -51,7 +51,7 @@ class MovieRepository {
       "api_key": apikey,
       "language": "en-US",
       "page": 1,
-      "with_genres": id
+      "with_genre": id
     };
 
     try {

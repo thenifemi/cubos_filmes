@@ -39,8 +39,8 @@ class PrimaryMovieCard extends StatelessWidget {
               width: double.infinity,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
-                child: Image.asset(
-                  movieImage,
+                child: Image.network(
+                  "https://image.tmdb.org/t/p/w500" + movieImage,
                   fit: BoxFit.fill,
                 ),
               ),

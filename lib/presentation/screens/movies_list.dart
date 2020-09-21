@@ -1,4 +1,5 @@
 import 'package:cubos_desafio_Tecnico_flutter/model/genre.dart';
+import 'package:cubos_desafio_Tecnico_flutter/presentation/screens/genre_movies.dart';
 import 'package:cubos_desafio_Tecnico_flutter/presentation/widgets/movie_card_widget.dart';
 import 'package:cubos_desafio_Tecnico_flutter/presentation/widgets/tabBar_widget.dart';
 import 'package:flutter/material.dart';
@@ -19,18 +20,12 @@ class _MoviesListState extends State<MoviesList>
   _MoviesListState(this.genres);
 
   TabController _tabController;
-  final _tabItems = [
-    "Ação",
-    "Aventura",
-    "Fantasia",
-    "Comédia",
-  ];
 
   @override
   void initState() {
     _tabController = TabController(
       initialIndex: 0,
-      length: genres.length,
+      length: 4,
       vsync: this,
     );
     super.initState();
@@ -44,6 +39,19 @@ class _MoviesListState extends State<MoviesList>
 
   @override
   Widget build(BuildContext context) {
+    final _tabItems = [
+      genres[0].name,
+      genres[1].name,
+      genres[8].name,
+      genres[3].name,
+    ];
+    final List<int> _tabItemsId = [
+      genres[0].id,
+      genres[1].id,
+      genres[8].id,
+      genres[3].id,
+    ];
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
@@ -63,29 +71,13 @@ class _MoviesListState extends State<MoviesList>
             height: 10.0,
           ),
 
-          // Scroll view body
           Expanded(
-            child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 6,
-              itemBuilder: (context, i) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => MovieDetailScreen(),
-                      ),
-                    );
-                  },
-                  child: PrimaryMovieCard(
-                    heroTag: i.toString(),
-                    movieImage: 'assets/images/mulan.jpg',
-                    movieName: "Mulan",
-                    movieGenre: "Ação - Aventura",
-                  ),
-                );
-              },
+            child: TabBarView(
+              controller: _tabController,
+              physics: NeverScrollableScrollPhysics(),
+              children: _tabItems.map((x) {
+                return GenreMovies(genreId: 4);
+              }).toList(),
             ),
           ),
         ],

@@ -1,18 +1,15 @@
-import '../../bloc/get_genres_bloc.dart';
-import '../../model/genre.dart';
-import '../../model/genre_response.dart';
-import 'movies_list.dart';
-import '../widgets/loading_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../bloc/get_genres_bloc.dart';
+import '../../model/genre.dart';
+import '../../model/genre_response.dart';
 import '../utils/colors.dart';
 import '../widgets/appbar_widget.dart';
-import '../widgets/movie_card_widget.dart';
-import '../widgets/tabBar_widget.dart';
+import '../widgets/loading_widget.dart';
 import '../widgets/text_widget.dart';
 import '../widgets/textfield_widget.dart';
-import 'movie_details_screen.dart';
+import 'movies_list.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -63,17 +60,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         builder: (BuildContext context, AsyncSnapshot<GenreResponse> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
-              return loadingWidget();
-              break;
-            case ConnectionState.done:
               if (snapshot.hasData) {
                 if (snapshot.data.error != null &&
                     snapshot.data.error.length > 0) {
-                  return _buildErrorWidget(snapshot.data.error);
+                  return buildErrorWidget(snapshot.data.error);
                 }
                 return buildMoviesWidget(snapshot.data);
               } else if (snapshot.hasError) {
-                return _buildErrorWidget(snapshot.error);
+                return buildErrorWidget(snapshot.error);
               } else {
                 return loadingWidget();
               }
@@ -82,6 +76,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               return loadingWidget();
               break;
             default:
+              print("null");
+
               return loadingWidget();
           }
         },
@@ -93,19 +89,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     List<Genre> genres = data.genres;
 
     if (genres.length == 0) {
-      return _buildErrorWidget("No Movie");
+      return buildErrorWidget("No Movie");
     } else
       return MoviesList(
         genres: genres,
       );
-  }
-
-  Widget _buildErrorWidget(error) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [Text("Oops!! A n error occured $error")],
-      ),
-    );
   }
 }

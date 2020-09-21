@@ -9,3 +9,12 @@ Widget loadingWidget() {
     ),
   );
 }
+
+Widget buildErrorWidget(error) {
+  return Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [Text("Oops!! An error occured $error")],
+    ),
+  );
+}
