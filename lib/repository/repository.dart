@@ -11,7 +11,7 @@ class MovieRepository {
   static String mainUrl = "https://api.themoviedb.org/3";
   final Dio _dio = Dio();
 
-  var getMoviesUrl = "$mainUrl/discover/movie";
+  var getMoviesUrl = "$mainUrl/trending/movie/week";
   var getGenresUrl = "$mainUrl/genre/movie/list";
   var getPopularUrl = "$mainUrl/movie/top_rated";
   var movieUrl = "$mainUrl/movie";
@@ -19,7 +19,7 @@ class MovieRepository {
   Future<GenreResponse> getGenres() async {
     var params = {
       "api_key": apikey,
-      "language": "en-US",
+      "language": "pt-BR",
       "page": 1,
     };
 
@@ -35,7 +35,7 @@ class MovieRepository {
   Future<MovieResponse> getMovies() async {
     var params = {
       "api_key": apikey,
-      "language": "en-US",
+      "language": "pt-BR",
       "page": 1,
     };
 
@@ -52,7 +52,7 @@ class MovieRepository {
   Future<MovieResponse> getMovieByGenres(int id) async {
     var params = {
       "api_key": apikey,
-      "language": "en-US",
+      "language": "pt-BR",
       "page": 1,
       "with_genre": id
     };
@@ -69,7 +69,7 @@ class MovieRepository {
   Future<MovieDetailResponse> getMovieDetail(int id) async {
     var params = {
       "api_key": apikey,
-      "language": "en-US",
+      "language": "pt-BR",
     };
     try {
       Response response =
@@ -84,15 +84,32 @@ class MovieRepository {
   Future<CastResponse> getCasts(int id) async {
     var params = {
       "api_key": apikey,
-      "language": "en-US",
+      "language": "pt-BR",
     };
     try {
-      Response response = await _dio.get(movieUrl + "$id" + "/credits",
+      Response response = await _dio.get(movieUrl + "/$id" + "/credits",
           queryParameters: params);
+      print(response.data);
       return CastResponse.fromJson(response.data);
     } catch (e, stacktrace) {
       print("Exception occured: $e stacktrace: $stacktrace");
       return CastResponse.withError("$e");
+    }
+  }
+
+  Future<CrewResponse> getCrew(int id) async {
+    var params = {
+      "api_key": apikey,
+      "language": "pt-BR",
+    };
+    try {
+      Response response = await _dio.get(movieUrl + "/$id" + "/credits",
+          queryParameters: params);
+      print(response.data);
+      return CrewResponse.fromJson(response.data);
+    } catch (e, stacktrace) {
+      print("Exception occured: $e stacktrace: $stacktrace");
+      return CrewResponse.withError("$e");
     }
   }
 }

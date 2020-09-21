@@ -136,26 +136,3 @@ Widget grayContainer(
     ),
   );
 }
-
-Widget transparentContainer(
-  String label,
-) {
-  return Container(
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(6.0),
-      border: Border.all(width: 0.4, color: Colors.grey),
-      color: Colors.white,
-    ),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: Center(
-        child: PrimaryText(
-          text: label.toUpperCase(),
-          color: Colors.grey,
-          fontSize: 16.0,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    ),
-  );
-}

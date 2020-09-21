@@ -27,10 +27,11 @@ dependencies:
   flutter_svg: ^0.19.0
   bubble_tab_indicator: ^0.1.4
   dio: ^3.0.10
-  equatable: 
+  equatable:
   dartz:
   bloc:
   rxdart:
+  intl:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -40,8 +41,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito:
-
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

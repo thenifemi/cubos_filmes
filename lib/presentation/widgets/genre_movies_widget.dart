@@ -64,7 +64,7 @@ class _GenreMoviesState extends State<GenreMovies> {
       return ListView.builder(
         physics: BouncingScrollPhysics(),
         shrinkWrap: true,
-        itemCount: 6,
+        itemCount: 20,
         itemBuilder: (context, i) {
           var movie = movies[i];
           return GestureDetector(

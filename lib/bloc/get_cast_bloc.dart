@@ -10,7 +10,7 @@ class CastBloc {
   final BehaviorSubject<CastResponse> _subject =
       BehaviorSubject<CastResponse>();
 
-  getGenre(int id) async {
+  getCast(int id) async {
     CastResponse response = await _repository.getCasts(id);
     _subject.sink.add(response);
   }
@@ -29,3 +29,29 @@ class CastBloc {
 }
 
 final castBloc = CastBloc();
+
+class CrewBloc {
+  final MovieRepository _repository = MovieRepository();
+  // ignore: close_sinks
+  final BehaviorSubject<CrewResponse> _subject =
+      BehaviorSubject<CrewResponse>();
+
+  getCrew(int id) async {
+    CrewResponse response = await _repository.getCrew(id);
+    _subject.sink.add(response);
+  }
+
+  void drainStream() {
+    _subject.value = null;
+  }
+
+  @mustCallSuper
+  void dispose() async {
+    await _subject.drain();
+    _subject.close();
+  }
+
+  BehaviorSubject<CrewResponse> get subject => _subject;
+}
+
+final crewBloc = CrewBloc();

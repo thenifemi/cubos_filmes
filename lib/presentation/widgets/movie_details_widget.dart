@@ -1,8 +1,11 @@
+import 'package:cubos_desafio_Tecnico_flutter/bloc/get_cast_bloc.dart';
 import 'package:cubos_desafio_Tecnico_flutter/bloc/get_movie_details_bloc.dart';
 import 'package:cubos_desafio_Tecnico_flutter/model/movie.dart';
 import 'package:cubos_desafio_Tecnico_flutter/model/movie_detail_response.dart';
+import 'package:cubos_desafio_Tecnico_flutter/presentation/widgets/cast_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../utils/colors.dart';
 import 'loading_widget.dart';
@@ -67,6 +70,7 @@ class _MovieDetailsIWidgetState extends State<MovieDetailsIWidget> {
 
   Widget buildMovieDetailsWidget(MovieDetailResponse data) {
     var detail = data.movieDetail;
+    var budgetFormatter = NumberFormat("#,##0.00", "en_US");
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -85,7 +89,7 @@ class _MovieDetailsIWidgetState extends State<MovieDetailsIWidget> {
                 RichText(
                   text: TextSpan(
                     children: [
-                      TextSpan(text: "7.3 "),
+                      TextSpan(text: detail.vote.toString()),
                       TextSpan(
                         text: "/ 10 ",
                         style: normalFont(Colors.grey, 16.0),
@@ -116,7 +120,7 @@ class _MovieDetailsIWidgetState extends State<MovieDetailsIWidget> {
                     children: [
                       TextSpan(text: "Titulo original: "),
                       TextSpan(
-                        text: movie.title,
+                        text: detail.originalTitle,
                         style: normalFont(MColors.textDark, 12.0),
                       ),
                     ],
@@ -131,44 +135,50 @@ class _MovieDetailsIWidgetState extends State<MovieDetailsIWidget> {
 
           //Year, Duration and Genre Container
           Container(
-            child: Builder(
-              builder: (BuildContext context) {
-                return Column(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        grayContainer("Ano", detail.releaseDate),
-                        SizedBox(
-                          width: 15.0,
-                        ),
-                        grayContainer("Duração", detail.runtime.toString())
-                      ],
+                    grayContainer("Ano", detail.releaseDate),
+                    SizedBox(
+                      width: 15.0,
                     ),
-                    SizedBox(height: 15.0),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        height: 40.0,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: detail.genres.length,
-                          itemBuilder: (context, i) {
-                            return Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 5.0),
-                              child:
-                                  transparentContainer(detail.genres[i].name),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
+                    grayContainer("Duração", detail.runtime.toString() + "min")
                   ],
-                );
-              },
+                ),
+                SizedBox(height: 15.0),
+                Container(
+                  height: 40.0,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: detail.genres.length,
+                    itemBuilder: (context, i) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(6.0),
+                          border: Border.all(width: 0.7, color: Colors.grey),
+                          color: Colors.white,
+                        ),
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 5.0, vertical: 3.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Center(
+                          child: PrimaryText(
+                            text: detail.genres[i].name.toUpperCase(),
+                            color: Colors.grey,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
 
@@ -207,9 +217,14 @@ class _MovieDetailsIWidgetState extends State<MovieDetailsIWidget> {
           Container(
             child: Column(
               children: [
-                grayContainer('ORÇAMENTO', '\$ ${detail.budget}'),
+                grayContainer(
+                    'ORÇAMENTO', '\$ ${budgetFormatter.format(detail.budget)}'),
                 SizedBox(height: 5.0),
-                grayContainer('PRODUTORAS', 'MARVEL STUDIOS'),
+                grayContainer(
+                    'PRODUTORAS',
+                    detail.company.first == null
+                        ? "No data"
+                        : detail.company.first),
               ],
             ),
           ),
@@ -250,12 +265,10 @@ class _MovieDetailsIWidgetState extends State<MovieDetailsIWidget> {
                 SizedBox(height: 5.0),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: PrimaryText(
-                    text:
-                        'Brie Larson, Samuel L. Jackson, Ben Mendelsohn, Djimon Hounsou, Lee Pace',
-                    color: MColors.textDark,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w600,
+                  child: Container(
+                    width: double.infinity,
+                    height: 20.0,
+                    child: CastWidget(id: movie.id),
                   ),
                 ),
               ],
