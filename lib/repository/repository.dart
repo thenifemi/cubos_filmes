@@ -1,4 +1,6 @@
+import 'package:cubos_desafio_Tecnico_flutter/model/cast_response.dart';
 import 'package:cubos_desafio_Tecnico_flutter/model/genre_response.dart';
+import 'package:cubos_desafio_Tecnico_flutter/model/movie_detail_response.dart';
 import 'package:cubos_desafio_Tecnico_flutter/model/movie_response.dart';
 import 'package:dio/dio.dart';
 
@@ -12,6 +14,7 @@ class MovieRepository {
   var getMoviesUrl = "$mainUrl/discover/movie";
   var getGenresUrl = "$mainUrl/genre/movie/list";
   var getPopularUrl = "$mainUrl/movie/top_rated";
+  var movieUrl = "$mainUrl/movie";
 
   Future<GenreResponse> getGenres() async {
     var params = {
@@ -60,6 +63,36 @@ class MovieRepository {
     } catch (e, stacktrace) {
       print("Exception occured: $e stacktrace: $stacktrace");
       return MovieResponse.withError("$e");
+    }
+  }
+
+  Future<MovieDetailResponse> getMovieDetail(int id) async {
+    var params = {
+      "api_key": apikey,
+      "language": "en-US",
+    };
+    try {
+      Response response =
+          await _dio.get(movieUrl + "/$id", queryParameters: params);
+      return MovieDetailResponse.fromJson(response.data);
+    } catch (e, stacktrace) {
+      print("Exception occured: $e stacktrace: $stacktrace");
+      return MovieDetailResponse.withError("$e");
+    }
+  }
+
+  Future<CastResponse> getCasts(int id) async {
+    var params = {
+      "api_key": apikey,
+      "language": "en-US",
+    };
+    try {
+      Response response = await _dio.get(movieUrl + "$id" + "/credits",
+          queryParameters: params);
+      return CastResponse.fromJson(response.data);
+    } catch (e, stacktrace) {
+      print("Exception occured: $e stacktrace: $stacktrace");
+      return CastResponse.withError("$e");
     }
   }
 }

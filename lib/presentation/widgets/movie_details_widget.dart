@@ -1,18 +1,73 @@
+import 'package:cubos_desafio_Tecnico_flutter/bloc/get_movie_details_bloc.dart';
+import 'package:cubos_desafio_Tecnico_flutter/model/movie.dart';
+import 'package:cubos_desafio_Tecnico_flutter/model/movie_detail_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/colors.dart';
+import 'loading_widget.dart';
 import 'movie_card_widget.dart';
 import 'text_widget.dart';
 
 class MovieDetailsIWidget extends StatefulWidget {
+  final Movie movie;
+
+  const MovieDetailsIWidget({Key key, @required this.movie}) : super(key: key);
   @override
-  _MovieDetailsIWidgetState createState() => _MovieDetailsIWidgetState();
+  _MovieDetailsIWidgetState createState() => _MovieDetailsIWidgetState(movie);
 }
 
 class _MovieDetailsIWidgetState extends State<MovieDetailsIWidget> {
+  final Movie movie;
+  _MovieDetailsIWidgetState(this.movie);
+
+  @override
+  void initState() {
+    super.initState();
+    movieDetailsBloc..getMovieDetails(movie.id);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    movieDetailsBloc..drainStream();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: movieDetailsBloc.subject.stream,
+      builder:
+          (BuildContext context, AsyncSnapshot<MovieDetailResponse> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.active:
+            if (snapshot.hasData) {
+              if (snapshot.data.error != null &&
+                  snapshot.data.error.length > 0) {
+                return buildErrorWidget(snapshot.data.error);
+              }
+              return buildMovieDetailsWidget(snapshot.data);
+            } else if (snapshot.hasError) {
+              return buildErrorWidget(snapshot.error);
+            } else {
+              return loadingWidget();
+            }
+            break;
+          case ConnectionState.waiting:
+            return loadingWidget();
+            break;
+          default:
+            print("null");
+
+            return loadingWidget();
+        }
+      },
+    );
+  }
+
+  Widget buildMovieDetailsWidget(MovieDetailResponse data) {
+    var detail = data.movieDetail;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       width: double.infinity,
@@ -50,7 +105,7 @@ class _MovieDetailsIWidgetState extends State<MovieDetailsIWidget> {
             child: Column(
               children: [
                 PrimaryText(
-                  text: 'Mulan',
+                  text: movie.title,
                   color: MColors.textDark,
                   fontSize: 20.0,
                   fontWeight: FontWeight.w600,
@@ -61,7 +116,7 @@ class _MovieDetailsIWidgetState extends State<MovieDetailsIWidget> {
                     children: [
                       TextSpan(text: "Titulo original: "),
                       TextSpan(
-                        text: "Mulan",
+                        text: movie.title,
                         style: normalFont(MColors.textDark, 12.0),
                       ),
                     ],
@@ -80,32 +135,37 @@ class _MovieDetailsIWidgetState extends State<MovieDetailsIWidget> {
               builder: (BuildContext context) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        grayContainer("Ano", "2019"),
+                        grayContainer("Ano", detail.releaseDate),
                         SizedBox(
                           width: 15.0,
                         ),
-                        grayContainer("Duração", "1h 20 min")
+                        grayContainer("Duração", detail.runtime.toString())
                       ],
                     ),
                     SizedBox(height: 15.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        transparentContainer('Ação'),
-                        SizedBox(
-                          width: 10.0,
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        height: 40.0,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: detail.genres.length,
+                          itemBuilder: (context, i) {
+                            return Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 5.0),
+                              child:
+                                  transparentContainer(detail.genres[i].name),
+                            );
+                          },
                         ),
-                        transparentContainer('Aventura'),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        transparentContainer('Sci-fi'),
-                      ],
-                    )
+                      ),
+                    ),
                   ],
                 );
               },
@@ -131,8 +191,7 @@ class _MovieDetailsIWidgetState extends State<MovieDetailsIWidget> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: PrimaryText(
-                    text:
-                        '''Aventura sobre Carol Danvers, uma agente da CIA que tem contato com uma raça alienígena e ganha poderes sobre-humanos. Entre os seus poderes estão uma força fora do comum e a habilidade de voar.''',
+                    text: movie.overview,
                     color: MColors.textDark,
                     fontSize: 14.0,
                     fontWeight: FontWeight.w600,
@@ -148,7 +207,7 @@ class _MovieDetailsIWidgetState extends State<MovieDetailsIWidget> {
           Container(
             child: Column(
               children: [
-                grayContainer('ORÇAMENTO', '\$ 152,000,000'),
+                grayContainer('ORÇAMENTO', '\$ ${detail.budget}'),
                 SizedBox(height: 5.0),
                 grayContainer('PRODUTORAS', 'MARVEL STUDIOS'),
               ],

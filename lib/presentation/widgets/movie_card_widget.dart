@@ -1,3 +1,4 @@
+import 'package:cubos_desafio_Tecnico_flutter/core/credentials.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,7 @@ class PrimaryMovieCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
                 child: Image.network(
-                  "https://image.tmdb.org/t/p/w500" + movieImage,
+                  MOVIE_POSTER_PATH + movieImage,
                   fit: BoxFit.fill,
                 ),
               ),
@@ -140,7 +141,6 @@ Widget transparentContainer(
   String label,
 ) {
   return Container(
-    height: 35.0,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(6.0),
       border: Border.all(width: 0.4, color: Colors.grey),

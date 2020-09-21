@@ -9,7 +9,7 @@ import '../widgets/appbar_widget.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/text_widget.dart';
 import '../widgets/textfield_widget.dart';
-import 'movies_list.dart';
+import '../widgets/movies_list_widget.dart';
 
 class Home extends StatefulWidget {
   @override
