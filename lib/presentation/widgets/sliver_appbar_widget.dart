@@ -40,58 +40,9 @@ class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
       height: expandedHeight + expandedHeight,
       child: Stack(
         children: [
-          SizedBox(
+          Container(
             height: appBarSize < kToolbarHeight ? kToolbarHeight : appBarSize,
-            child: PrimaryAppBar(
-              backgroundColor: MColors.whiteSmoke,
-              title: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: 80.0,
-                      height: 32.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(100.0),
-                        color: Colors.white,
-                        boxShadow: boxShadow,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.arrow_back_ios,
-                            color: MColors.textDark,
-                            size: 13.54,
-                          ),
-                          SizedBox(
-                            width: 5.0,
-                          ),
-                          PrimaryText(
-                              text: 'Voltar',
-                              color: MColors.textDark,
-                              fontSize: 13.0)
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 15.0,
-                  ),
-                  Opacity(
-                    opacity: hideTitleWhenExpanded ? 1.0 - percent : 1.0,
-                    child: PrimaryText(
-                      text: movie.title,
-                      color: MColors.textDark,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            color: MColors.whiteSmoke,
           ),
           Positioned(
             left: 0.0,

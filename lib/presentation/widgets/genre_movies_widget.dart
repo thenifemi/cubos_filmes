@@ -1,3 +1,4 @@
+import 'package:cubos_desafio_Tecnico_flutter/bloc/get_movie_details_bloc.dart';
 import 'package:flutter/material.dart';
 
 import '../../bloc/get_movie_byGenre.dart';
@@ -58,6 +59,7 @@ class _GenreMoviesState extends State<GenreMovies> {
 
   Widget buildGenreMoviesWidget(MovieResponse data) {
     List<Movie> movies = data.movies;
+
     if (movies.length == 0) {
       return buildErrorWidget("No Movies");
     } else
@@ -67,6 +69,7 @@ class _GenreMoviesState extends State<GenreMovies> {
         itemCount: 20,
         itemBuilder: (context, i) {
           var movie = movies[i];
+
           return GestureDetector(
             onTap: () {
               Navigator.of(context).push(
