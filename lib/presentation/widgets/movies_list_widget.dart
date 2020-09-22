@@ -1,3 +1,4 @@
+import 'package:cubos_desafio_Tecnico_flutter/bloc/get_movie_byGenre.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/genre.dart';
@@ -31,6 +32,7 @@ class _MoviesListState extends State<MoviesList>
 
   @override
   void dispose() {
+    _tabController.indexIsChanging ?? moviesByGenreBloc.drainStream();
     _tabController.dispose();
     super.dispose();
   }

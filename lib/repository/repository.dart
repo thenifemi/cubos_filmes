@@ -11,7 +11,7 @@ class MovieRepository {
   static String mainUrl = "https://api.themoviedb.org/3";
   final Dio _dio = Dio();
 
-  var getMoviesUrl = "$mainUrl/trending/movie/week";
+  var getMoviesUrl = "$mainUrl/movie/popular";
   var getGenresUrl = "$mainUrl/genre/movie/list";
   var getPopularUrl = "$mainUrl/movie/top_rated";
   var movieUrl = "$mainUrl/movie";
