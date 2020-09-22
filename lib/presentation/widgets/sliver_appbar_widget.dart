@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import '../../core/credentials.dart';
 import '../../model/movie.dart';
 import '../utils/colors.dart';
-import 'appbar_widget.dart';
-import 'text_widget.dart';
 
 class CustomSliverDelegate extends SliverPersistentHeaderDelegate {
   final Movie movie;
