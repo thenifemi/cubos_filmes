@@ -53,8 +53,8 @@ class MovieRepository {
     var params = {
       "api_key": apikey,
       "language": "pt-BR",
-      "page": 1,
-      "with_genre": id
+      "page": 2,
+      "with_genres": id
     };
 
     try {

@@ -1,12 +1,11 @@
-import 'package:cubos_desafio_Tecnico_flutter/bloc/get_movie_details_bloc.dart';
 import 'package:flutter/material.dart';
 
 import '../../bloc/get_movie_byGenre.dart';
 import '../../model/movie.dart';
 import '../../model/movie_response.dart';
+import '../screens/movie_details_screen.dart';
 import 'loading_widget.dart';
 import 'movie_card_widget.dart';
-import '../screens/movie_details_screen.dart';
 
 class GenreMovies extends StatefulWidget {
   final int genreId;
@@ -24,6 +23,7 @@ class _GenreMoviesState extends State<GenreMovies> {
   void initState() {
     super.initState();
     moviesByGenreBloc..getMovieByGenre(genreId);
+    print(genreId);
   }
 
   @override

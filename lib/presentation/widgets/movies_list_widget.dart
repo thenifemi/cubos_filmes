@@ -44,6 +44,18 @@ class _MoviesListState extends State<MoviesList>
       genres[3].name,
     ];
 
+    final action = genres.where((g) => g.id == 28);
+    final adventure = genres.where((g) => g.id == 12);
+    final fantasy = genres.where((g) => g.id == 35);
+    final comedy = genres.where((g) => g.id == 14);
+
+    final tabBarviews = [
+      action.first.id,
+      adventure.first.id,
+      fantasy.first.id,
+      comedy.first.id,
+    ];
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
@@ -67,8 +79,10 @@ class _MoviesListState extends State<MoviesList>
             child: TabBarView(
               controller: _tabController,
               physics: NeverScrollableScrollPhysics(),
-              children: _tabItems.map((x) {
-                return GenreMovies();
+              children: tabBarviews.map((id) {
+                return GenreMovies(
+                  genreId: id,
+                );
               }).toList(),
             ),
           ),

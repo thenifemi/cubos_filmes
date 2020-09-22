@@ -78,7 +78,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               floating: true,
               delegate: CustomSliverDelegate(
                 movie: movie,
-                expandedHeight: 250.0,
+                expandedHeight: 270.0,
               ),
             ),
 
